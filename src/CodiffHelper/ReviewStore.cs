@@ -84,11 +84,11 @@ internal sealed partial class ReviewStore
     {
         var reviews = new List<Review>();
         foreach (var ownerDirectory in PlainSubdirectories(Root))
-        foreach (var repoDirectory in PlainSubdirectories(ownerDirectory))
-        foreach (var reviewDirectory in PlainSubdirectories(repoDirectory))
-        {
-            if (TryLoad(reviewDirectory, out _) is { } review) reviews.Add(review);
-        }
+            foreach (var repoDirectory in PlainSubdirectories(ownerDirectory))
+                foreach (var reviewDirectory in PlainSubdirectories(repoDirectory))
+                {
+                    if (TryLoad(reviewDirectory, out _) is { } review) reviews.Add(review);
+                }
 
         return reviews
             .OrderBy(r => r.PullRequest.Owner, StringComparer.OrdinalIgnoreCase)
