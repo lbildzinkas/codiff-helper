@@ -23,6 +23,7 @@ internal sealed class FakeGit : IGit
 internal sealed class FakeGitHub(FakeGit git) : IGitHub
 {
     public Dictionary<int, PullRequestInfo> PullRequests { get; } = new();
+    public Dictionary<int, string> HeadCommits { get; } = new();
     public string? NotReadyMessage { get; set; }
     public string? CloneFailure { get; set; }
     public string? CheckoutFailure { get; set; }
@@ -56,7 +57,7 @@ internal sealed class FakeGitHub(FakeGit git) : IGitHub
     {
         Checkouts.Add(repositoryPath);
         if (CheckoutFailure is not null) throw new UserFacingException(CheckoutFailure);
-        git.Heads[repositoryPath] = PullRequests[pullRequest.Number].HeadCommit;
+        git.Heads[repositoryPath] = HeadCommits[pullRequest.Number];
         return Task.CompletedTask;
     }
 }

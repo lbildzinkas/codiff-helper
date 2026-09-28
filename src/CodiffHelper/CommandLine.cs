@@ -61,9 +61,6 @@ internal static class CommandLine
                     if (i + 1 >= args.Count) throw Error("--agent needs a name, for example: --agent pi");
                     agent = ValidateAgent(args[++i]);
                     break;
-                case not null when arg.StartsWith("--agent=", StringComparison.Ordinal):
-                    agent = ValidateAgent(arg["--agent=".Length..]);
-                    break;
                 case not null when arg.StartsWith('-'):
                     throw Error($"unknown option '{arg}'");
                 default:

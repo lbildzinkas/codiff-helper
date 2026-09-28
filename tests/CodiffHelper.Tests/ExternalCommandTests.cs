@@ -33,13 +33,13 @@ public class ExternalCommandTests
     {
         var runner = new FakeProcessRunner().When(
             r => Is(r, "gh", "pr", "view"),
-            new ProcessResult(0, """{"title":"Add widgets","state":"MERGED","headRefOid":"abc"}""", ""));
+            new ProcessResult(0, """{"title":"Add widgets","state":"MERGED"}""", ""));
 
         var info = await new GhCli(runner).GetPullRequestAsync(Pr);
 
-        Assert.Equal(new PullRequestInfo("Add widgets", "MERGED", "abc"), info);
+        Assert.Equal(new PullRequestInfo("Add widgets", "MERGED"), info);
         Assert.False(info.IsOpen);
-        Assert.Equal(["pr", "view", "7", "--repo", "acme/widgets", "--json", "title,state,headRefOid"], runner.Requests.Single().Arguments);
+        Assert.Equal(["pr", "view", "7", "--repo", "acme/widgets", "--json", "title,state"], runner.Requests.Single().Arguments);
         Assert.Equal("1", runner.Requests.Single().Environment!["GH_PROMPT_DISABLED"]);
     }
 

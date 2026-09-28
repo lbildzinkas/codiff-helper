@@ -19,8 +19,8 @@ public class ListTests : IDisposable
         var clean = _h.PlantReview(Harness.Pr("acme", "web", 7));
         var dirty = _h.PlantReview(Harness.Pr("acme", "api", 21));
         _h.PlantReview(Harness.Pr("acme", "api", 22), withRecord: false);
-        _h.GitHub.PullRequests[7] = new PullRequestInfo("Add login page", "OPEN", "");
-        _h.GitHub.PullRequests[21] = new PullRequestInfo("Speed up search", "MERGED", "");
+        _h.GitHub.PullRequests[7] = new PullRequestInfo("Add login page", "OPEN");
+        _h.GitHub.PullRequests[21] = new PullRequestInfo("Speed up search", "MERGED");
         _h.Git.States[dirty] = new LocalState([], ["scratch.txt"], [], 0);
 
         Assert.Equal(ExitCodes.Success, await _h.RunAsync("--list"));

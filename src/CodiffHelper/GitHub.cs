@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace CodiffHelper;
 
-internal sealed record PullRequestInfo(string Title, string State, string HeadCommit)
+internal sealed record PullRequestInfo(string Title, string State)
 {
     public bool IsOpen => State.Equals("OPEN", StringComparison.OrdinalIgnoreCase);
 }
@@ -41,7 +41,7 @@ internal sealed class GhCli(IProcessRunner runner) : IGitHub
     {
         var result = await RunGhAsync(
             ["pr", "view", pullRequest.Number.ToString(System.Globalization.CultureInfo.InvariantCulture),
-             "--repo", pullRequest.RepoSlug, "--json", "title,state,headRefOid"],
+             "--repo", pullRequest.RepoSlug, "--json", "title,state"],
             null,
             cancellationToken).ConfigureAwait(false);
         if (!result.Succeeded)
@@ -94,7 +94,7 @@ internal sealed class GhCli(IProcessRunner runner) : IGitHub
         {
             var parsed = JsonSerializer.Deserialize(json, GhJsonContext.Default.GhPullRequest);
             if (parsed?.Title is null || parsed.State is null) return null;
-            return new PullRequestInfo(parsed.Title, parsed.State, parsed.HeadRefOid ?? "");
+            return new PullRequestInfo(parsed.Title, parsed.State);
         }
         catch (JsonException)
         {
@@ -127,8 +127,7 @@ internal sealed class GhCli(IProcessRunner runner) : IGitHub
 
 internal sealed record GhPullRequest(
     [property: JsonPropertyName("title")] string? Title,
-    [property: JsonPropertyName("state")] string? State,
-    [property: JsonPropertyName("headRefOid")] string? HeadRefOid);
+    [property: JsonPropertyName("state")] string? State);
 
 [JsonSerializable(typeof(GhPullRequest))]
 internal sealed partial class GhJsonContext : JsonSerializerContext;

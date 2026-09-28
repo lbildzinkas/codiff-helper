@@ -85,7 +85,7 @@ internal sealed class LocalGitHub(string remote) : IGitHub
     public Task EnsureReadyAsync(CancellationToken cancellationToken = default) => Task.CompletedTask;
 
     public Task<PullRequestInfo> GetPullRequestAsync(PullRequestUrl pullRequest, CancellationToken cancellationToken = default) =>
-        Task.FromResult(PullRequests.GetValueOrDefault(pullRequest.Number) ?? new PullRequestInfo("Local PR", "OPEN", ""));
+        Task.FromResult(PullRequests.GetValueOrDefault(pullRequest.Number) ?? new PullRequestInfo("Local PR", "OPEN"));
 
     public Task CloneAsync(PullRequestUrl pullRequest, string destination, CancellationToken cancellationToken = default)
     {

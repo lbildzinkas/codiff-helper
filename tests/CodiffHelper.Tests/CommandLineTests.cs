@@ -13,7 +13,6 @@ public class CommandLineTests
     public void No_walkthrough_and_agent_are_passed_on()
     {
         Assert.Equal(new OpenCommand(Pr, false, "pi"), CommandLine.Parse([Url, "--no-walkthrough", "--agent", "pi"]));
-        Assert.Equal(new OpenCommand(Pr, true, "claude"), CommandLine.Parse(["--agent=claude", Url]));
     }
 
     [Fact]
@@ -46,7 +45,8 @@ public class CommandLineTests
     [InlineData(new[] { Url, "--done", "--no-walkthrough" }, "--done cannot be combined")]
     [InlineData(new[] { Url, "--agent" }, "--agent needs a name")]
     [InlineData(new[] { Url, "--agent", "--done" }, "is not an agent name")]
-    [InlineData(new[] { Url, "--agent=" }, "is not an agent name")]
+    [InlineData(new[] { Url, "--agent=" }, "unknown option '--agent='")]
+    [InlineData(new[] { "--agent=pi", Url }, "unknown option '--agent=pi'")]
     [InlineData(new[] { "https://github.com/a/b/issues/3" }, "is not a pull request URL")]
     public void Usage_errors_exit_with_code_2(string[] args, string expected)
     {
