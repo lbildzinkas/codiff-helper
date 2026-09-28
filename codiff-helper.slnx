@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CodiffHelper/CodiffHelper.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CodiffHelper.Tests/CodiffHelper.Tests.csproj" />
+  </Folder>
+</Solution>
